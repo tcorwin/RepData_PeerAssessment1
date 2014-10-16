@@ -39,7 +39,16 @@ median(data$steps, na.rm=T)
 
 ## What is the average daily activity pattern?
 
+Make a time series plot of the 5-minute intervals and the average number of steps taken, averaged across all days.
 
+```{r echo=TRUE}
+avg <- aggregate(x=data$steps,by=list(data$interval),FUN=mean, na.rm=TRUE)
+attach(avg)
+plot(Group.1,x,type='l',xlab='5-minute interval',ylab='Avg. steps taken')
+maxint<-avg[which.max(avg$x),1]
+```
+
+The 5-minute interval, on average, with the most steps is `r maxint`.
 
 ## Imputing missing values
 
