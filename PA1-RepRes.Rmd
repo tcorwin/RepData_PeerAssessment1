@@ -8,7 +8,19 @@ output:
 
 ## Loading and preprocessing the data
 
+Set the working directory where the CSV file is located.
 
+```{r}
+setwd("U:/R Directory/RepRes PA1")
+```
+
+Load the data
+
+```{r}
+library("foreign")
+data<-read.csv("activity.csv", header=T)
+summary(data)
+```
 
 ## What is mean total number of steps taken per day?
 
