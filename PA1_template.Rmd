@@ -19,6 +19,7 @@ Load the data
 ```{r}
 library("foreign")
 data<-read.csv("activity.csv", header=T)
+attach(data)
 summary(data)
 ```
 
@@ -27,14 +28,15 @@ summary(data)
 Plot a histogram of the steps data, ignoring NAs
 
 ```{r}
-hist(data$steps, breaks=20, col="red",xlab="Steps per Day", main="Histogram of Steps")
+DailySteps<-tapply(data$steps,data$date,FUN=sum,na.rm=T)
+hist(DailySteps, breaks=20, col="red",xlab="Steps per Day", main="Histogram of Steps")
 ```
 
 Calculate the mean and median number of steps per day
 
 ```{r echo=TRUE,results="hide"}
-m1<-mean(data$steps, na.rm=T)
-med1<-median(data$steps, na.rm=T)
+m1<-mean(DailySteps, na.rm=T)
+med1<-median(DailySteps, na.rm=T)
 ```
 
 The mean number of steps per day is `r m1`. 
@@ -56,6 +58,12 @@ The 5-minute interval, on average, with the most steps is `r maxint`.
 
 ## Imputing missing values
 
+# Count the number of missing values, impute the missing values, create new data set with no missing data, and recalculate the histogram, mean, and median number of steps taken per day.
 
+```{r}
+NumberMissing<-sum(is.na(data$steps))
+```
+
+There are `r NumberMissing` missing values in the dataset.
 
 ## Are there differences in activity patterns between weekdays and weekends?
