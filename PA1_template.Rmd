@@ -58,8 +58,6 @@ The 5-minute interval, on average, with the most steps is `r maxint`.
 
 ## Imputing missing values
 
-# Count the number of missing values, impute the missing values, create new data set with no missing data, and recalculate the histogram, mean, and median number of steps taken per day.
-
 ```{r}
 NumberMissing<-sum(is.na(data$steps))
 ```
