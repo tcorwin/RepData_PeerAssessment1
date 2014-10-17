@@ -32,10 +32,14 @@ hist(data$steps, breaks=20, col="red",xlab="Steps per Day", main="Histogram of S
 
 Calculate the mean and median number of steps per day
 
-```{r}
-mean(data$steps, na.rm=T)
-median(data$steps, na.rm=T)
+```{r echo=TRUE,results="hide"}
+m1<-mean(data$steps, na.rm=T)
+med1<-median(data$steps, na.rm=T)
 ```
+
+The mean number of steps per day is `r m1`. 
+
+The median number of steps per day is `r med1`.
 
 ## What is the average daily activity pattern?
 
