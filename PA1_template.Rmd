@@ -64,4 +64,64 @@ NumberMissing<-sum(is.na(data$steps))
 
 There are `r NumberMissing` missing values in the dataset.
 
+Replace missing values with the mean for that 5-minute interval across days. The result is a new dataset, in this case called NewData
+
+```{r}
+ImpVals<-rbind(avg,avg,avg,avg,avg,avg,avg,avg,avg,avg,avg,avg)
+ImpVals2<-rbind(ImpVals,ImpVals,ImpVals,ImpVals,ImpVals,avg)
+NewData<-cbind(data,ImpVals2$x)
+attach(NewData)
+NewData$steps <- ifelse(is.na(steps),ImpVals$x,steps)
+```
+
+Make a histogram of the total number of steps taken each day. 
+
+```{r}
+DailySteps2<-tapply(NewData$steps,NewData$date,FUN=sum)
+hist(DailySteps2, breaks=20, col="red",xlab="Steps per Day", main="Histogram of Steps")
+```
+
+Calculate and report the mean and median total number of steps taken per day.
+
+```{r echo=TRUE,results="hide"}
+m2<-mean(DailySteps2)
+med2<-median(DailySteps2)
+```
+
+The mean number of steps per day is `r m2`. 
+
+The median number of steps per day is `r med2`.
+
 ## Are there differences in activity patterns between weekdays and weekends?
+
+Create a new factor indicating if the given date is a weekday or weekend.
+
+```{r}
+NewData$date<-as.Date(NewData$date)
+wkday<-weekdays(NewData$date)
+NewData<-cbind(NewData,wkday)
+NewData$daycat[wkday=="Monday"]<-"Weekday"
+NewData$daycat[wkday=="Tuesday"]<-"Weekday"
+NewData$daycat[wkday=="Wednesday"]<-"Weekday"
+NewData$daycat[wkday=="Thursday"]<-"Weekday"
+NewData$daycat[wkday=="Friday"]<-"Weekday"
+NewData$daycat[wkday=="Saturday"]<-"Weekend"
+NewData$daycat[wkday=="Sunday"]<-"Weekend"
+```
+
+Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days.
+
+Time series plot of the average steps taken on weekdays:
+
+```{r}
+steps.weekday <- aggregate(steps ~ interval, data = NewData, subset = NewData$daycat=="Weekday", FUN = mean)
+plot(steps.weekday, type = "l")
+```
+
+Time series plot of the average steps taken on weekends:
+
+```{r}
+steps.weekend <- aggregate(steps ~ interval, data = NewData, subset = NewData$daycat=="Weekend", FUN = mean)
+plot(steps.weekend, type = "l")
+```
+
